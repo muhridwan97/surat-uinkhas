@@ -339,7 +339,7 @@ class Mcrud extends CI_Model {
     }
 
 	// get data sk
-    function getSkByNoYear($year = null)
+    function getSkByYear($year = null)
     {
 		$tableSK = $this->db->from("tbl_sk")
 					->select([

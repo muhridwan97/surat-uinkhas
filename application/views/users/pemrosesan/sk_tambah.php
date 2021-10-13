@@ -18,7 +18,7 @@ $( function() {
 }
 </style>
 <?php
-$cek_ns = $this->Mcrud->getSkByNoYear(date('Y'));
+$cek_ns = $this->Mcrud->getSkByYear(date('Y'));
 // $this->db->order_by('id_sk', 'DESC');
 // $this->db->limit(1);
 // $cek_ns = $this->db->get('tbl_sk');
