@@ -1169,11 +1169,7 @@ class Users extends CI_Controller {
 			// }
 
 			
-			if ($data['user']->row()->level == 'user') {
-				$tableSK = $this->Mcrud->getAllSk($id_user);
-			}else{
-				$tableSK = $this->Mcrud->getAllSk();
-			}
+			$tableSK = $this->Mcrud->getAllSk();
 			$data['sk'] 		  = $tableSK;
 
 			$tableBagian = $this->Mcrud->getAllSk($id_user);
