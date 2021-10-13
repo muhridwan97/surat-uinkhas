@@ -338,4 +338,18 @@ class Mcrud extends CI_Model {
         return $tableSK->get()->row();
     }
 
+	// get data sk
+    function getSkByNoYear($year = null)
+    {
+		$tableSK = $this->db->from("tbl_sk")
+					->select([
+						"tbl_sk.*",
+						])
+					->order_by('id_sk', 'DESC')
+					->where("date_format(str_to_date(tbl_sk.tgl_sk, '%d-%m-%Y'), '%Y')=".$year, null)
+					->limit(1);
+
+        return $tableSK->get();
+    }
+
 }

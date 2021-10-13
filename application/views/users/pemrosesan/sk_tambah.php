@@ -18,18 +18,19 @@ $( function() {
 }
 </style>
 <?php
-$this->db->order_by('id_sk', 'DESC');
-$this->db->limit(1);
-$cek_ns = $this->db->get('tbl_sk');
+$cek_ns = $this->Mcrud->getSkByNoYear(date('Y'));
+// $this->db->order_by('id_sk', 'DESC');
+// $this->db->limit(1);
+// $cek_ns = $this->db->get('tbl_sk');
 if ($cek_ns->num_rows() == 0) {
-  $no_surat       = "B-47/In.20";
+  $no_surat       = "B-1/In.20";
 }else{
   $noUrutArray = explode("/",$cek_ns->row()->no_surat);
   $noUrut 	 			= preg_replace("/[^0-9]/","",$noUrutArray[0]);
   //$noUrut=2489;
   $noUrut++;
   $kode="/In.20";
-  $no_surat				= "B-".sprintf("%4s", $noUrut). $kode ;
+  $no_surat				= "B-". $noUrut. $kode ;
 
 }
 ?>
