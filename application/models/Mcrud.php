@@ -328,7 +328,9 @@ class Mcrud extends CI_Model {
 					->select([
 						"tbl_sk.*",
 						"pimpinan.pimpinan",
+						"pimpinan.kode AS kode_pimpinan",
 						'dept.dept',
+						'dept.kode AS kode_dept',
 						])
 					->join('pimpinan', 'pimpinan.id = tbl_sk.id_pimpinan', 'left')
 					->join('dept', 'dept.id = tbl_sk.id_dept','left')

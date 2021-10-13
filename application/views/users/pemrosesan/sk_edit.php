@@ -33,7 +33,7 @@ $( function() {
                       <div class="col-lg-5">
                         <div class="input-group">
                           <span class="input-group-addon"><i class="icon-database"></i></span>
-                          <select class="form-control cari_ns" name="ns" id="ns" required disabled>
+                          <select class="form-control cari_ns" name="ns" id="ns" required readonly>
                             <option value="<?php echo $query->no_surat; ?>"><?php echo $query->no_surat; ?></option>
                           </select>
                         </div>

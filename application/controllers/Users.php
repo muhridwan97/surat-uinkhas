@@ -1577,20 +1577,33 @@ class Users extends CI_Controller {
 						}
 					}
 
-					if (isset($_POST['btnupdate'])) {
+					if (isset($_POST['btnupdate'])) {//
+						$ns   	 	= htmlentities(strip_tags($this->input->post('ns')));
 						$tgl_ns   	 	= htmlentities(strip_tags($this->input->post('tgl_ns')));
 						$id_pengirim   		= htmlentities(strip_tags($this->input->post('pengirim')));
 						$penerima   		= htmlentities(strip_tags($this->input->post('penerima')));
 						$perihal   	 	= htmlentities(strip_tags($this->input->post('perihal')));
 						$departemen   	 	= htmlentities(strip_tags($this->input->post('departemen')));
 
-						$pimpinanData = $this->Mcrud->getPimpinanById($id_pengirim);
-
+						$dataPimpinan = $this->Mcrud->getPimpinanById($id_pengirim);
+						$dataDepartemen = $this->Mcrud->getDeptById($departemen);
+						$nsArray = explode("/",$ns);
+						$nsFirst = reset($nsArray)."/".next($nsArray);
+						$nsLast = end($nsArray);
+						$nsSecLast = prev($nsArray);
+						$nsLast = $nsSecLast . "/" . $nsLast;
+						$pimpinan   	= htmlentities(strip_tags($this->input->post('pimpinan')));
+						if(!empty($dataPimpinan['kode'])){
+							$ns = $nsFirst."/".$dataPimpinan['kode']."/".$dataDepartemen['kode']."/" . $nsLast;
+						}else{
+							$ns = $nsFirst."/".$dataDepartemen['kode']."/" . $nsLast;
+						}
 								$data = array(
+									'no_surat'			 => $ns,
 									'tgl_ns'		   	 => $tgl_ns,
 									'id_dept'		   	 => $departemen,
 									'id_pimpinan'		   	 => $id_pengirim,
-									'pengirim'	 		 => $pimpinanData['pimpinan'],
+									'pengirim'	 		 => $dataPimpinan['pimpinan'],
 									'penerima'	 		 => $penerima,
 									'perihal'		   	 => $perihal,
 								);
