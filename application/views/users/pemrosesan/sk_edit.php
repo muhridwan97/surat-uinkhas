@@ -62,7 +62,12 @@ $( function() {
                     <div class="form-group">
                       <label class="control-label col-lg-3">Dari</label>
                       <div class="col-lg-9">
-                            <input type="text" name="pengirim" id="pengirim" class="form-control" value="<?php echo $query->pengirim; ?>" placeholder="">
+                            <select class="form-control" name="pengirim" id="pengirim"
+                                    data-placeholder="pengirim" style="width: 100%" required>
+                                <?php foreach ($pimpinan as $key => $pimp) : ?>
+                                <option value="<?= $pimp['id'] ?>" <?= set_select('pimpinan', $pimp['pimpinan'], $query->id_pimpinan == $pimp['id']) ?>><?= $pimp['pimpinan'] ?></option>                          
+                                <?php endforeach; ?>
+                            </select>
                       </div>
                     </div>
                     <div class="form-group">
@@ -76,6 +81,18 @@ $( function() {
                       <div class="col-lg-9">
     												<input type="text" name="perihal" id="perihal" class="form-control" value="<?php echo $query->perihal; ?>" placeholder="">
     									</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-lg-3">Klasifikasi Surat</label>
+                      <div class="col-lg-9">
+                        <select class="form-control" name="departemen" id="departemen"
+                                data-placeholder="departemen" style="width: 100%" required>
+                            <?php foreach ($departemen as $key => $dept) : ?>
+                            <option value="<?= $dept['id'] ?>" <?= set_select('departemen', $dept['dept'], $query->id_dept == $dept['id']) ?>><?= $dept['dept'] ?></option>                          
+                            <?php endforeach; ?>
+                        </select>
+                      </div>
                     </div>
 
                     <div class="form-group">

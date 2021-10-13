@@ -288,14 +288,14 @@ class Users extends CI_Controller {
 
 				if ($aksi == 't') {
 					$p = "bagian_tambah";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
 					$data['judul_web'] 	  = "Tambah Bagian | Aplikasi Surat Menyurat";
 				}elseif ($aksi == 'e') {
 					$p = "bagian_edit";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
@@ -318,7 +318,7 @@ class Users extends CI_Controller {
 
 				}elseif ($aksi == 'h') {
 
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 					$data['query'] = $this->db->get_where("tbl_bagian", array('id_bagian' => "$id"))->row();
@@ -422,7 +422,7 @@ class Users extends CI_Controller {
 			$this->db->order_by('nama_bagian', 'ASC');
 			$data['bagian']			  = $this->db->get("tbl_bagian")->result();
 
-			if ($data['user']->row()->level == 'admin') {
+			if ($data['user']->row()->level == '') {
 					redirect('404_content');
 			}
 
@@ -432,14 +432,14 @@ class Users extends CI_Controller {
 
 				if ($aksi == 't') {
 					$p = "ns_tambah";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
 					$data['judul_web'] 	  = "Tambah Nomor Surat | Aplikasi Surat Menyurat";
 				}elseif ($aksi == 'e') {
 					$p = "ns_edit";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
@@ -462,7 +462,7 @@ class Users extends CI_Controller {
 
 				}elseif ($aksi == 'h') {
 
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 					$data['query'] = $this->db->get_where("tbl_ns", array('id_ns' => "$id", 'id_user' => "$id_user"))->row();
@@ -958,7 +958,7 @@ class Users extends CI_Controller {
 
 				if ($aksi == 't') {
 					$p = "sm_tambah";
-					if ($data['user']->row()->level == 's_admin' or $data['user']->row()->level == 'admin') {
+					if ($data['user']->row()->level == '') {
 						$this->session->set_flashdata('msg',
 							'
 							<div class="alert alert-warning alert-dismissible" role="alert">
@@ -1019,7 +1019,7 @@ class Users extends CI_Controller {
 					}
 				}elseif ($aksi == 'e') {
 					$p = "sm_edit";
-					if ($data['user']->row()->level == 's_admin' or $data['user']->row()->level == 'admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
@@ -1042,48 +1042,29 @@ class Users extends CI_Controller {
 
 				}elseif ($aksi == 'h') {
 
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
 					$data['query'] = $this->db->get_where("tbl_sm", array('id_sm' => "$id", 'id_user' => "$id_user"))->row();
 					$data['judul_web'] 	  = "Hapus Surat Masuk | Aplikasi Surat Menyurat";
 
-					if ($data['user']->row()->level != 'user') {
-							// $this->session->set_flashdata('msg',
-							// 	'
-							// 	<div class="alert alert-warning alert-dismissible" role="alert">
-							// 		 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							// 			 <span aria-hidden="true">&times;&nbsp; &nbsp;</span>
-							// 		 </button>
-							// 		 <strong>Gagal!</strong> Maaf, Anda tidak berhak menghapus data surat masuk.
-							// 	</div>'
-							// );
-
-							$data2 = array(
-								'id_user'		   	 => ''
-							);
-							$this->Mcrud->update_sm(array('id_sm' => "$id"), $data2);
-
-					}else {
-
-							$query_h = $this->db->get_where("tbl_lampiran", array('token_lampiran' => $data['query']->token_lampiran));
-							foreach ($query_h->result() as $baris) {
-								unlink('lampiran/'.$baris->nama_berkas);
-							}
-
-							$this->Mcrud->delete_lampiran($data['query']->token_lampiran);
-							$this->Mcrud->delete_sm_by_id($id);
-							$this->session->set_flashdata('msg',
-								'
-								<div class="alert alert-success alert-dismissible" role="alert">
-									 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										 <span aria-hidden="true">&times;&nbsp; &nbsp;</span>
-									 </button>
-									 <strong>Sukses!</strong> Surat masuk berhasil dihapus.
-								</div>'
-							);
+					$query_h = $this->db->get_where("tbl_lampiran", array('token_lampiran' => $data['query']->token_lampiran));
+					foreach ($query_h->result() as $baris) {
+						unlink('lampiran/'.$baris->nama_berkas);
 					}
+
+					$this->Mcrud->delete_lampiran($data['query']->token_lampiran);
+					$this->Mcrud->delete_sm_by_id($id);
+					$this->session->set_flashdata('msg',
+						'
+						<div class="alert alert-success alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;&nbsp; &nbsp;</span>
+								</button>
+								<strong>Sukses!</strong> Surat masuk berhasil dihapus.
+						</div>'
+					);
 
 					redirect('users/sm');
 				}else{
@@ -1187,19 +1168,20 @@ class Users extends CI_Controller {
 			// 		redirect('404_content');
 			// }
 
-			$this->db->join('tbl_user', 'tbl_sk.id_user=tbl_user.id_user');
+			
 			if ($data['user']->row()->level == 'user') {
-					$this->db->where('tbl_sk.id_user', "$id_user");
+				$tableSK = $this->Mcrud->getAllSk($id_user);
+			}else{
+				$tableSK = $this->Mcrud->getAllSk();
 			}
-			$this->db->order_by('tbl_sk.id_sk', 'DESC');
-			$data['sk'] 		  = $this->db->get("tbl_sk");
+			$data['sk'] 		  = $tableSK;
 
-			$this->db->order_by('tbl_bagian.nama_bagian', 'ASC');
-			$data['bagian'] 		  = $this->db->get_where("tbl_bagian","id_user='$id_user'")->result();
+			$tableBagian = $this->Mcrud->getAllSk($id_user);
+			$data['bagian'] 		  = $tableBagian;
 
 				if ($aksi == 't') {
 					$p = "sk_tambah";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
@@ -1280,15 +1262,17 @@ class Users extends CI_Controller {
 					}
 				}elseif ($aksi == 'e') {
 					$p = "sk_edit";
-					if ($data['user']->row()->level == 's_admin' or $data['user']->row()->level == 'admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
 					// $this->db->join('tbl_user', 'tbl_sk.id_user=tbl_user.id_user');
-					$data['query'] = $this->db->get_where("tbl_sk", array('id_sk' => "$id", 'id_user' => "$id_user"))->row();
+					$data['query'] = $this->Mcrud->getSkById($id);
 					$data['judul_web'] 	  = "Edit Surat Keluar | Aplikasi Surat Menyurat";
+					$data['departemen'] = $this->Mcrud->getAllDept();
+					$data['pimpinan'] = $this->Mcrud->getAllPimpinan();
 
-					if ($data['query']->id_user == '') {
+					if ($data['user']->row()->level == '') {
 							$this->session->set_flashdata('msg',
 								'
 								<div class="alert alert-warning alert-dismissible" role="alert">
@@ -1304,46 +1288,30 @@ class Users extends CI_Controller {
 
 				}elseif ($aksi == 'h') {
 
-					if ($data['user']->row()->level == 's_admin' or $data['user']->row()->level == 'admin') {
+					if ($data['user']->row()->level == '' ) {
 							redirect('404_content');
 					}
 
 					$data['query'] = $this->db->get_where("tbl_sk", array('id_sk' => "$id", 'id_user' => "$id_user"))->row();
 					$data['judul_web'] 	  = "Hapus Surat Keluar | Aplikasi Surat Menyurat";
-
-					if ($data['user']->row()->level != 'user') {
-							// $this->session->set_flashdata('msg',
-							// 	'
-							// 	<div class="alert alert-warning alert-dismissible" role="alert">
-							// 		 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							// 			 <span aria-hidden="true">&times;&nbsp; &nbsp;</span>
-							// 		 </button>
-							// 		 <strong>Gagal!</strong> Maaf, Anda tidak berhak menghapus data surat keluar.
-							// 	</div>'
-							// );
-							$data2 = array(
-								'id_user'		   	 => ''
-							);
-							$this->Mcrud->update_sk(array('id_sk' => "$id"), $data2);
-					}else {
-
-							$query_h = $this->db->get_where("tbl_lampiran", array('token_lampiran' => $data['query']->token_lampiran));
-							foreach ($query_h->result() as $baris) {
-								unlink('lampiran/'.$baris->nama_berkas);
-							}
-
-							$this->Mcrud->delete_lampiran($data['query']->token_lampiran);
-							$this->Mcrud->delete_sk_by_id($id);
-							$this->session->set_flashdata('msg',
-								'
-								<div class="alert alert-success alert-dismissible" role="alert">
-									 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										 <span aria-hidden="true">&times;&nbsp; &nbsp;</span>
-									 </button>
-									 <strong>Sukses!</strong> Surat keluar berhasil dihapus.
-								</div>'
-							);
+				
+					$query_h = $this->db->get_where("tbl_lampiran", array('token_lampiran' => $data['query']->token_lampiran));
+					foreach ($query_h->result() as $baris) {
+						unlink('lampiran/'.$baris->nama_berkas);
 					}
+
+					$this->Mcrud->delete_lampiran($data['query']->token_lampiran);
+					$this->Mcrud->delete_sk_by_id($id);
+					$this->session->set_flashdata('msg',
+						'
+						<div class="alert alert-success alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;&nbsp; &nbsp;</span>
+								</button>
+								<strong>Sukses!</strong> Surat keluar berhasil dihapus.
+						</div>'
+					);
+					
 
 					redirect('users/sk');
 				}else{
@@ -1367,7 +1335,6 @@ class Users extends CI_Controller {
 							$ns   	 			= htmlentities(strip_tags($this->input->post('ns')));
 							$tgl_ns   	 	= htmlentities(strip_tags($this->input->post('tgl_ns')));
 							$bagian   		= htmlentities(strip_tags($this->input->post('bagian')));
-							$pengirim   	 	= htmlentities(strip_tags($this->input->post('pengirim')));
 							$penerima   	 	= htmlentities(strip_tags($this->input->post('penerima')));
 							$perihal   	 	= htmlentities(strip_tags($this->input->post('perihal')));
 							$departemen   	 	= htmlentities(strip_tags($this->input->post('departemen')));
@@ -1378,6 +1345,8 @@ class Users extends CI_Controller {
 							date_default_timezone_set('Asia/Jakarta');
 							$waktu = date('Y-m-d H:m:s');
 							$tgl 	 = date('d-m-Y');
+							$pimpinanData = $this->Mcrud->getPimpinanById($pimpinan);
+							$pengirim = $pimpinanData['pimpinan'];
 
 							$token = md5("$id_user-$ns-$waktu");
 
@@ -1610,15 +1579,20 @@ class Users extends CI_Controller {
 
 					if (isset($_POST['btnupdate'])) {
 						$tgl_ns   	 	= htmlentities(strip_tags($this->input->post('tgl_ns')));
-						$pengirim   		= htmlentities(strip_tags($this->input->post('pengirim')));
+						$id_pengirim   		= htmlentities(strip_tags($this->input->post('pengirim')));
 						$penerima   		= htmlentities(strip_tags($this->input->post('penerima')));
 						$perihal   	 	= htmlentities(strip_tags($this->input->post('perihal')));
+						$departemen   	 	= htmlentities(strip_tags($this->input->post('departemen')));
+
+						$pimpinanData = $this->Mcrud->getPimpinanById($id_pengirim);
 
 								$data = array(
 									'tgl_ns'		   	 => $tgl_ns,
-									'pengirim'	 		 => $pengirim,
+									'id_dept'		   	 => $departemen,
+									'id_pimpinan'		   	 => $id_pengirim,
+									'pengirim'	 		 => $pimpinanData['pimpinan'],
 									'penerima'	 		 => $penerima,
-									'perihal'		   	 => $perihal
+									'perihal'		   	 => $perihal,
 								);
 								$this->Mcrud->update_sk(array('id_sk' => $id), $data);
 
@@ -1661,14 +1635,14 @@ class Users extends CI_Controller {
 
 				if ($aksi == 't') {
 					$p = "memo_tambah";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
 					$data['judul_web'] 	  = "Tambah Memo | Aplikasi Surat Menyurat";
 				}elseif ($aksi == 'e') {
 					$p = "memo_edit";
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 
@@ -1691,7 +1665,7 @@ class Users extends CI_Controller {
 
 				}elseif ($aksi == 'h') {
 
-					if ($data['user']->row()->level == 's_admin') {
+					if ($data['user']->row()->level == '') {
 							redirect('404_content');
 					}
 					$data['query'] = $this->db->get_where("tbl_memo", array('id_memo' => "$id", 'id_user' => "$id_user"))->row();

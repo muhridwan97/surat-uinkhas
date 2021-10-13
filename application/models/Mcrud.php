@@ -290,4 +290,52 @@ class Mcrud extends CI_Model {
         return $query;
     }
 
+	// get data sk
+    function getAllSk($id_user = null)
+    {
+		$tableSK = $this->db->from("tbl_sk")
+					->select([
+						"tbl_sk.*",
+						"pimpinan.pimpinan"
+						])
+					->join('pimpinan', 'pimpinan.id = tbl_sk.id_pimpinan', 'left')
+					->join('tbl_user', 'tbl_sk.id_user=tbl_user.id_user')
+					->order_by('tbl_sk.id_sk', 'DESC');
+		if(!empty($id_user)){
+			$tableSK->where('tbl_sk.id_user', $id_user);
+		}
+
+        return $tableSK->get();
+    }
+
+	// get data bagian
+    function getAllBagian($id_user = null)
+    {
+		$tableBagian = $this->db->from("tbl_bagian")
+							->where("tbl_bagian.id_user = ". $id_user)
+			 				->order_by('tbl_bagian.nama_bagian', 'ASC');
+		if(!empty($id_user)){
+			$tableBagian->where('tbl_bagian.id_user', $id_user);
+		}
+
+        return $tableBagian->get()->result();
+    }
+
+	// get data sk
+    function getSkById($id = null)
+    {
+		$tableSK = $this->db->from("tbl_sk")
+					->select([
+						"tbl_sk.*",
+						"pimpinan.pimpinan",
+						'dept.dept',
+						])
+					->join('pimpinan', 'pimpinan.id = tbl_sk.id_pimpinan', 'left')
+					->join('dept', 'dept.id = tbl_sk.id_dept','left')
+					->join('tbl_user', 'tbl_sk.id_user=tbl_user.id_user')
+					->where('tbl_sk.id_sk', $id);
+
+        return $tableSK->get()->row();
+    }
+
 }

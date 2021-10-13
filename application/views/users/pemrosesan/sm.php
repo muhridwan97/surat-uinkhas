@@ -19,7 +19,7 @@
           </div>
 
                 <?php
-                if ($user->row()->level == 'user') { ?>
+                if ($user->row()->level == 'user' || $user->row()->level == 's_admin') { ?>
                     <br>
                     <a href="users/sm/t" class="btn btn-primary">+ <i class="icon-folder-upload2"></i> Surat Masuk baru</a>
                 <?php
@@ -68,7 +68,7 @@
                     <a href="users/sm/d/<?php echo $baris->id_sm; ?>" class="btn btn-default btn-xs"><i class="icon-eye"></i></a>
                    
                     <?php
-                    if ($user->row()->level == 'user') { ?>
+                    if ($user->row()->level == 'user' || $user->row()->level == 's_admin') { ?>
                     <a href="users/sm/e/<?php echo $baris->id_sm; ?>" class="btn btn-success btn-xs"><i class="icon-pencil7"></i></a>
                     <a href="users/sm/h/<?php echo $baris->id_sm; ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah Anda yakin?')"><i class="icon-trash"></i></a>
                     <?php

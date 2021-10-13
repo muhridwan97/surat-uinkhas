@@ -19,7 +19,7 @@
           </div>
 
                 <?php
-                if ($user->row()->level == 'user') { ?>
+                if ($user->row()->level == 'user' || $user->row()->level == 's_admin') { ?>
                     <br>
                     <a href="users/sk/t" class="btn btn-primary">+ <i class="icon-folder-upload2"></i> Surat Keluar baru</a>
                 <?php
@@ -49,7 +49,7 @@
                   <td><?php echo $no.'.'; ?></td>
                   <td><?php echo $baris->no_surat; ?></td>
                   <td><?php echo $baris->tgl_ns; ?></td>
-                  <td><?php echo $baris->pengirim; ?></td>
+                  <td><?php echo $baris->pimpinan; ?></td>
                   <td><?php echo $baris->penerima; ?></td>
                   <td><?php echo $baris->perihal; ?></td>
                   <!--<td><?php
@@ -68,7 +68,7 @@
                     <a href="users/sk/d/<?php echo $baris->id_sk; ?>" class="btn btn-default btn-xs"><i class="icon-eye"></i></a>
                    
                     <?php
-                    if ($user->row()->level == 'user') { ?>
+                    if ($user->row()->level == 'user' || $user->row()->level == 's_admin') { ?>
                     <a href="users/sk/e/<?php echo $baris->id_sk; ?>" class="btn btn-success btn-xs"><i class="icon-pencil7"></i></a>
                     <a href="users/sk/h/<?php echo $baris->id_sk; ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah Anda yakin?')"><i class="icon-trash"></i></a>
                     <?php

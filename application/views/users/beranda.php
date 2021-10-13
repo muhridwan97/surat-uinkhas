@@ -40,7 +40,7 @@
                   </div>
                   <h3 class="no-margin">
                   <?php
-                  if ($level == 'user') {
+                  if (false) {
                     echo number_format($this->db->query("SELECT * FROM tbl_sm WHERE id_user='$id_user'")->num_rows(), 0,",",".");
                   }else{
                     echo number_format($this->db->query("SELECT * FROM tbl_sm")->num_rows(), 0,",",".");
@@ -67,7 +67,7 @@
                   </div>
                   <h3 class="no-margin">
                   <?php
-                  if ($level == 'user') {
+                  if (false) {
                     echo number_format($this->db->query("SELECT * FROM tbl_sk WHERE id_user='$id_user'")->num_rows(), 0,",","."); 
                   }else{
                     echo number_format($this->db->query("SELECT * FROM tbl_sk")->num_rows(), 0,",",".");
