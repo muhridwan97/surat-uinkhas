@@ -1337,7 +1337,11 @@ class Users extends CI_Controller {
 							$dataDepartemen = $this->Mcrud->getDeptById($departemen);
 							$pimpinan   	= htmlentities(strip_tags($this->input->post('pimpinan')));
 							$dataPimpinan = $this->Mcrud->getPimpinanById($pimpinan);
-							$ns = str_replace("/../","/".$dataPimpinan['kode']."/".$dataDepartemen['kode']."/", $ns);
+							if(!empty($dataPimpinan['kode'])){
+								$ns = str_replace("/../","/".$dataPimpinan['kode']."/".$dataDepartemen['kode']."/", $ns);
+							}else{
+								$ns = str_replace("/../","/".$dataDepartemen['kode']."/", $ns);
+							}
 							date_default_timezone_set('Asia/Jakarta');
 							$waktu = date('Y-m-d H:m:s');
 							$tgl 	 = date('d-m-Y');
